@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +10,8 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="images/og-image.jpg">
 <meta name="theme-color" content="#0a0a0a">
+<!-- 📷 LOGO FILE: images/logo.svg (browser-tab icon). The header/footer logo is inline, so it works even without this file -->
+<link rel="icon" type="image/svg+xml" href="images/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -175,6 +176,7 @@
     width:40px;height:40px;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
     font-family:var(--ff-display);font-weight:700;color:var(--gold);font-size:18px;flex-shrink:0;
   }
+  .brand-logo{width:46px;height:46px;flex-shrink:0;display:block;}
   .brand-text .name{font-family:var(--ff-display);font-weight:600;font-size:18px;letter-spacing:1px;text-transform:uppercase;}
   .brand-text .loc{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
   nav.primary-nav{display:flex;align-items:center;gap:30px;}
@@ -200,7 +202,7 @@
   }
   @media(max-width:400px){
     .nav-inner{padding:14px 16px;gap:10px;}
-    .brand-mark{width:34px;height:34px;font-size:15px;}
+    .brand-logo{width:38px;height:38px;}
     .brand{gap:8px;}
     .brand-text .name{font-size:15px;}
     .brand-text .loc{font-size:9px;letter-spacing:1.5px;}
@@ -229,11 +231,17 @@
     position:relative;min-height:92vh;display:flex;align-items:flex-end;
     padding:140px 0 90px;
   }
-  @media(max-width:600px){
-    .hero{min-height:88vh;padding:108px 0 64px;}
-    .hero-scroll{display:none;}
-  }
   .hero .media-frame{position:absolute;inset:0;z-index:0;border:none;}
+  .hero-bg-mobile{display:none;}
+  .hero-bg-mobile img{object-position:38% center;}
+  @media(max-width:768px){
+    .hero-bg-desktop{display:none;}
+    .hero-bg-mobile{display:block;}
+    /* lighter overlay up top so the photo is actually visible; dark only where the text sits */
+    .hero .hero-bg-mobile::after{
+      background:linear-gradient(180deg,rgba(8,8,8,0.10) 0%,rgba(8,8,8,0.22) 38%,rgba(8,8,8,0.82) 74%,rgba(8,8,8,0.96) 100%);
+    }
+  }
   .hero .media-frame::after{
     content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,rgba(8,8,8,0.55) 0%,rgba(8,8,8,0.55) 30%,rgba(8,8,8,0.92) 100%),
@@ -246,6 +254,15 @@
   .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
   .hero-scroll{position:absolute;bottom:28px;right:28px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:11px;letter-spacing:2px;}
   .hero-scroll .line{width:1px;height:36px;background:linear-gradient(var(--gold),transparent);}
+  /* mobile hero — kept AFTER the base hero rules so it actually overrides them */
+  @media(max-width:600px){
+    .hero{min-height:calc(100svh - 110px);padding:96px 0 40px;}
+    .hero .hero-scroll{display:none;}
+    .hero h1{font-size:clamp(38px,11.5vw,52px);}
+    .hero p.sub{font-size:15px;margin-bottom:24px;}
+    .hero-ctas{flex-direction:column;gap:10px;}
+    .hero-ctas .btn{width:100%;}
+  }
 
   /* Trust strip */
   .trust-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-alt);}
@@ -260,7 +277,12 @@
     font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--amber);
     border:1px solid rgba(224,184,115,0.4);padding:4px 8px;
   }
-  @media(max-width:768px){.trust-grid{grid-template-columns:repeat(2,1fr);}.trust-item:nth-child(2){border-right:none;}}
+  @media(max-width:768px){.trust-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.trust-item:nth-child(2){border-right:none;}}
+  @media(max-width:480px){
+    .trust-item{padding:22px 14px;}
+    .trust-value{font-size:22px;flex-wrap:wrap;}
+    .trust-item:nth-child(-n+2){border-bottom:1px solid var(--border);}
+  }
 
   /* About */
   .split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
@@ -285,7 +307,8 @@
 
   /* Membership */
   .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);}
-  @media(max-width:860px){.plans-grid{grid-template-columns:1fr;}}
+  @media(max-width:860px){.plans-grid{grid-template-columns:minmax(0,1fr);}}
+  @media(max-width:480px){.plan-card{padding:28px 20px;}.plan-card .btn{white-space:normal;text-align:center;}}
   .plan-card{background:var(--surface);padding:36px 30px;border-right:1px solid var(--border);display:flex;flex-direction:column;}
   .plan-card:last-child{border-right:none;}
   .plan-card.featured{background:var(--surface-2);position:relative;}
@@ -375,7 +398,9 @@
   .contact-section h2{color:#15110a;}
   .contact-section p{color:#2b2208;}
   .contact-split{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:start;}
-  @media(max-width:900px){.contact-split{grid-template-columns:1fr;gap:36px;}}
+  .contact-split > *{min-width:0;}
+  @media(max-width:900px){.contact-split{grid-template-columns:minmax(0,1fr);gap:36px;}}
+  @media(max-width:480px){.contact-rows .value{max-width:100%;text-align:left;}.enquiry-card{padding:22px 18px;}}
   .contact-rows .row{border-top:1px solid rgba(21,17,10,0.2);padding:18px 0;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
   .contact-rows .row:last-child{border-bottom:1px solid rgba(21,17,10,0.2);}
   .contact-rows .label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#4a3c12;}
@@ -434,8 +459,8 @@
     font-weight:700;font-size:13px;letter-spacing:.5px;display:flex;align-items:center;gap:8px;
     box-shadow:0 6px 18px rgba(0,0,0,0.4);white-space:nowrap;
   }
-  @media(max-width:380px){
-    .fab-chat-toggle{width:44px;height:44px;padding:0;border-radius:50%;justify-content:center;}
+  @media(max-width:600px){
+    .fab-chat-toggle{width:46px;height:46px;padding:0;border-radius:50%;justify-content:center;}
     .fab-chat-label{display:none;}
   }
 
@@ -478,6 +503,36 @@
     background:rgba(16,16,16,0.85);color:var(--white);display:none;align-items:center;justify-content:center;font-size:16px;}
   .back-top.show{display:flex;}
 
+  /* Hero category tags */
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .hero-tags span{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:var(--white);border:1px solid rgba(244,243,239,0.35);padding:5px 10px;background:rgba(10,10,10,0.35);}
+
+  /* Marquee strip */
+  .marquee{overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg);padding:16px 0;}
+  .marquee-track{display:flex;width:max-content;gap:28px;align-items:center;animation:marq 32s linear infinite;}
+  .marquee-track span{font-family:var(--ff-display);font-size:20px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+  .marquee-track i{font-style:normal;color:var(--muted);font-size:9px;}
+  @keyframes marq{to{transform:translateX(-50%);}}
+
+  /* Mobile sticky action bar */
+  .mobile-bar{display:none;}
+  @media(max-width:768px){
+    .mobile-bar{
+      display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:75;
+      background:rgba(10,10,10,0.96);border-top:1px solid var(--border);
+      padding-bottom:env(safe-area-inset-bottom);
+    }
+    .mobile-bar a{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;font-size:11px;font-weight:600;letter-spacing:.5px;color:var(--white);}
+    .mobile-bar a svg{width:20px;height:20px;color:var(--gold);}
+    .mobile-bar a.mb-wa svg{color:#25D366;}
+    body{padding-bottom:64px;}
+    .fab-stack{bottom:78px;}
+    .fab-wa{display:none;} /* WhatsApp is already in the bottom bar on phones */
+    .chat-panel{bottom:136px;}
+    .back-top{bottom:78px;}
+  }
+  @media(max-width:480px){.marquee-track span{font-size:16px;}}
+
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
   :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 </style>
@@ -489,6 +544,28 @@
      (search for "BUSINESS CONFIGURATION")
 ========================================================= -->
 
+<!-- LOGO (inline so the single file stays self-contained; replace with the owner's real logo later) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="rfGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1d77c"/><stop offset="0.55" stop-color="#d4af37"/><stop offset="1" stop-color="#a3811f"/>
+    </linearGradient>
+    <symbol id="rf-logo" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="57" fill="#0a0a0a" stroke="url(#rfGold)" stroke-width="3"/>
+      <circle cx="60" cy="60" r="50" fill="none" stroke="url(#rfGold)" stroke-width="0.9" opacity="0.7"/>
+      <g transform="translate(0,-5)" fill="none" stroke="url(#rfGold)">
+        <path d="M45 82 V34 H64 a13.5 13.5 0 0 1 0 27 H45" stroke-width="9"/>
+        <path d="M62 61 L77 82" stroke-width="9"/>
+      </g>
+      <g transform="translate(0,-5)" fill="url(#rfGold)">
+        <rect x="44" y="93.5" width="32" height="3" rx="1"/>
+        <rect x="38" y="88" width="6" height="14" rx="1.5"/><rect x="76" y="88" width="6" height="14" rx="1.5"/>
+        <rect x="32.5" y="91" width="5" height="8" rx="1.5"/><rect x="82.5" y="91" width="5" height="8" rx="1.5"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
 <!-- Announcement bar -->
 <div class="announcement"><b>Welcome</b><span>Your fitness journey starts here — message us on WhatsApp to visit Royal Fitness Gym.</span></div>
 
@@ -496,7 +573,7 @@
 <header class="site-header" id="siteHeader">
   <div class="nav-inner">
     <a href="#top" class="brand">
-      <div class="brand-mark">R</div>
+      <svg class="brand-logo" aria-hidden="true"><use href="#rf-logo"/></svg>
       <div class="brand-text">
         <div class="name">Royal Fitness</div>
         <div class="loc">Sahibganj · Jharkhand</div>
@@ -511,6 +588,7 @@
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-cta-group">
+      <a class="btn btn-outline-gold" href="tel:+917250444666">Call</a>
       <a class="btn btn-gold" id="navWaBtn" href="#" target="_blank" rel="noopener">Join the Gym</a>
     </div>
     <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
@@ -540,7 +618,8 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="media-frame" data-slot="hero-bg">
+  <!-- 📷 PHOTO (laptop/desktop only): hero background shown on screens wider than 768px -->
+  <div class="media-frame hero-bg-desktop" data-slot="hero-bg">
     <img src="images/01_Gemini_Generated_Image_7c06db7c06db7c06.jpg" alt="Royal Fitness Gym training floor" loading="eager" onerror="this.closest('.media-frame').classList.add('media-missing')">
     <div class="media-fallback">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M2 12h20M6 6v12M18 6v12M4 9v6M20 9v6" stroke-linecap="round"/></svg>
@@ -548,8 +627,18 @@
       <span class="media-fallback-meta">images/hero-bg.jpg · 1920×1080</span>
     </div>
   </div>
+  <!-- 📷 PHOTO (mobile only): hero background shown on screens 768px and below -->
+  <div class="media-frame hero-bg-mobile" data-slot="hero-bg-mobile">
+    <img src="images/Homepage%20Image.png" alt="Royal Fitness Gym — athlete deadlifting on the training floor" loading="eager" fetchpriority="high" onerror="this.closest('.media-frame').classList.add('media-missing')">
+    <div class="media-fallback">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M2 12h20M6 6v12M18 6v12M4 9v6M20 9v6" stroke-linecap="round"/></svg>
+      <span class="media-fallback-label">Mobile Hero</span>
+      <span class="media-fallback-meta">images/Homepage Image.png</span>
+    </div>
+  </div>
   <div class="wrap hero-content">
     <span class="hero-loc">Sakrograh · Sahibganj · Jharkhand</span>
+    <div class="hero-tags" aria-label="Training categories"><span>Strength</span><span>Cardio</span><span>Free Weights</span></div>
     <h1>Built by <span class="gold">discipline.</span><br>Defined by <span class="gold">strength.</span></h1>
     <p class="sub">Train with purpose. Build strength. Become your strongest self at Royal Fitness Gym — a focused training environment in Sakrograh, Sahibganj.</p>
     <div class="hero-ctas">
@@ -559,6 +648,14 @@
   </div>
   <div class="hero-scroll"><span>SCROLL</span><div class="line"></div></div>
 </section>
+
+<!-- MARQUEE STRIP -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Strength Training</span><i>◆</i><span>Free Weights</span><i>◆</i><span>Cardio Conditioning</span><i>◆</i><span>Train With Purpose</span><i>◆</i><span>Sakrograh</span><i>◆</i>
+    <span>Strength Training</span><i>◆</i><span>Free Weights</span><i>◆</i><span>Cardio Conditioning</span><i>◆</i><span>Train With Purpose</span><i>◆</i><span>Sakrograh</span><i>◆</i>
+  </div>
+</div>
 
 <!-- TRUST STRIP -->
 <section class="trust-strip">
@@ -982,7 +1079,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="brand" style="display:flex;align-items:center;gap:12px;">
-          <div class="brand-mark">R</div>
+          <svg class="brand-logo" aria-hidden="true"><use href="#rf-logo"/></svg>
           <div class="brand-text">
             <div class="name">Royal Fitness</div>
             <div class="loc">Sahibganj · Jharkhand</div>
@@ -1025,6 +1122,13 @@
 
 <button class="back-top" id="backTop" aria-label="Back to top">&#8593;</button>
 
+<!-- Mobile sticky action bar (phones only) -->
+<nav class="mobile-bar" aria-label="Quick actions">
+  <a href="tel:+917250444666"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>Call</a>
+  <a href="#" class="wa-link mb-wa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 01-13.4 7.8L3 21l1.3-4.4A9 9 0 1121 12z" stroke-linecap="round" stroke-linejoin="round"/></svg>WhatsApp</a>
+  <a href="#" id="mapsLinkBar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.5"/></svg>Directions</a>
+</nav>
+
 <!-- Chat Panel -->
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Royal Fitness Assistant chat">
   <div class="chat-head">
@@ -1066,6 +1170,8 @@ document.addEventListener("DOMContentLoaded", function(){
   const mapsLinkFooter = document.getElementById("mapsLinkFooter");
   if(mapsLink) mapsLink.href = mapsUrl;
   if(mapsLinkFooter) mapsLinkFooter.href = mapsUrl;
+  const mapsLinkBar = document.getElementById("mapsLinkBar");
+  if(mapsLinkBar) mapsLinkBar.href = mapsUrl;
 
   document.getElementById("navWaBtn").href = waLink("Hello " + SITE.gymName + ", I would like to know about membership plans.");
   document.getElementById("drawerWaBtn").href = waLink("Hello " + SITE.gymName + ", I would like to know about membership plans.");
